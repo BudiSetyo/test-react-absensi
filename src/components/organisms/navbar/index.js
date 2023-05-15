@@ -10,7 +10,7 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="w-full bg-gray-500 py-2 px-8">
+    <nav className="w-full bg-gray-600 py-2 px-8">
       <div className="w-full flex justify-between items-center">
         <h1 className="text-3xl text-white font-bold italic">Absensi</h1>
         <button onClick={handleLogout}>
