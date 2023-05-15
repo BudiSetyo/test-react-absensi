@@ -1,16 +1,20 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import { Dashboard, Auth } from "./pages";
+import { Dashboard, Auth, History } from "./pages";
 
 function App() {
   const router = createBrowserRouter([
     {
       path: "/",
+      element: <Auth />,
+    },
+    {
+      path: "/dashboard",
       element: <Dashboard />,
     },
     {
-      path: "auth",
-      element: <Auth />,
+      path: "/history/:nik",
+      element: <History />,
     },
   ]);
   return <RouterProvider router={router} />;

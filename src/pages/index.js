@@ -1,4 +1,10 @@
-import Dashboard from "./dashboard";
+// Auth
 import Auth from "./auth";
 
-export { Dashboard, Auth };
+// Dashboard
+import Dashboard from "./dashboard";
+
+// History
+import History from "./history";
+
+export { Auth, Dashboard, History };

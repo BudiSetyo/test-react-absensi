@@ -1,10 +1,14 @@
 import React from "react";
+import { DashboardLayout } from "../../components";
+import { Admin, User } from "./subPages";
 
 const Dashboard = () => {
   return (
-    <div>
-      <h1>This is Dashboard page</h1>
-    </div>
+    <DashboardLayout>
+      <section className="px-8 py-4">
+        <Admin />
+      </section>
+    </DashboardLayout>
   );
 };
 
