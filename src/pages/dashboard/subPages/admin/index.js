@@ -1,16 +1,45 @@
 import React from "react";
-import { Input, Button, Modal, Form } from "antd";
-import { useState } from "react";
+import { Input, Button, Modal, Form, message } from "antd";
 import ListUser from "../listUser";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import axios from "axios";
+const api = process.env.REACT_APP_API_URL;
 
 const Admin = () => {
+  const navigate = useNavigate();
+  const authData = useSelector((state) => state.auth.value);
+
   const [showModal, setShowModal] = useState(false);
 
   const handleShowModal = () => setShowModal(!showModal);
 
   const handleAddEmploye = (values) => {
-    console.log(values);
-    window.location.reload();
+    axios({
+      method: "post",
+      url: `${api}/users`,
+      headers: {
+        Authorization: `Bearer ${authData.token}`,
+      },
+      data: {
+        nik: values.nik,
+        name: values.name,
+        password: values.password,
+        role: "user",
+      },
+    })
+      .then((result) => {
+        console.log(result);
+        message.success("Add user success");
+        handleShowModal();
+        return navigate(0);
+      })
+      .catch((err) => {
+        handleShowModal();
+        message.error("Add user failed");
+        return;
+      });
   };
 
   return (
@@ -51,7 +80,7 @@ const Admin = () => {
               name="nik"
               rules={[{ required: true, message: "Please input your NIK!" }]}
             >
-              <Input />
+              <Input type="number" />
             </Form.Item>
 
             <Form.Item

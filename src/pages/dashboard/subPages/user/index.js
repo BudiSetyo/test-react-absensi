@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import { Button, Skeleton, Table, message } from "antd";
+import { Button, Table, message } from "antd";
+import { Spiner } from "../../../../components";
 import { useSelector } from "react-redux";
 import moment from "moment";
 import axios from "axios";
@@ -37,9 +38,33 @@ const User = () => {
     },
   ];
 
-  const fetchData = () => {
+  const submitAttendance = () => {
     setLoading(true);
 
+    axios({
+      method: "post",
+      url: `${api}/history/attendance`,
+      data: {
+        userId: authData.id,
+      },
+      headers: {
+        Authorization: `Bearer ${authData.token}`,
+      },
+    })
+      .then((result) => {
+        message.success(result.data?.message);
+        fetchData();
+        setLoading(false);
+        return;
+      })
+      .catch((err) => {
+        message.error(err.response?.data.message);
+        setLoading(false);
+        return;
+      });
+  };
+
+  const fetchData = () => {
     axios({
       method: "get",
       url: `${api}/history/?id=${authData.id}`,
@@ -56,12 +81,10 @@ const User = () => {
             };
           })
         );
-        setLoading(false);
         return;
       })
       .catch((err) => {
         message.error(err.response?.dta.message);
-        setLoading(false);
         return;
       });
   };
@@ -72,27 +95,26 @@ const User = () => {
 
   return (
     <section className="px-8">
+      {loading ? <Spiner /> : <></>}
       <header className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold italic">
           Hello {authData?.name}
         </h1>
 
         <div>
-          <Button className="bg-blue-500" type="primary" size="large">
+          <Button
+            className="bg-blue-500"
+            type="primary"
+            size="large"
+            onClick={submitAttendance}
+          >
             Submit Attendance
           </Button>
         </div>
       </header>
 
       <section className="mt-10">
-        <Skeleton
-          paragraph={{
-            rows: 10,
-          }}
-          loading={loading}
-        >
-          <Table dataSource={data} columns={columns} pagination={false} />
-        </Skeleton>
+        <Table dataSource={data} columns={columns} pagination={false} />
       </section>
     </section>
   );
