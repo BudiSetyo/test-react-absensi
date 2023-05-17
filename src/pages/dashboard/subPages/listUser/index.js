@@ -90,43 +90,67 @@ const ListUser = () => {
       title: "NIK",
       dataIndex: "nik",
       key: "nik",
+      align: "center",
     },
     {
       title: "Name",
       dataIndex: "name",
       key: "name",
+      align: "center",
     },
     {
       title: "Role",
       dataIndex: "role",
-      key: "role",
+      render: (_, record) => (
+        <button
+          className={`py-1 px-2 ${
+            record.role === "user" ? "bg-blue-500" : "bg-green-500"
+          } w-16 text-white font-semibold rounded-lg`}
+        >
+          {record.role}
+        </button>
+      ),
+      align: "center",
     },
     {
+      title: "Detail",
       render: (_, record) => (
         <button onClick={() => navigate(`/history/${record.nik}`)}>
           <HistoryOutlined className="text-2xl" />
         </button>
       ),
+      align: "center",
     },
     {
+      title: "Edit",
       render: (_, record) => (
         <button onClick={() => handleShowModal.edit(record)}>
           <EditOutlined className="text-2xl text-blue-500" />
         </button>
       ),
+      align: "center",
     },
     {
+      title: "Delete",
       render: (_, record) => (
         <button onClick={() => handleShowModal.delete(record)}>
           <DeleteOutlined className="text-2xl text-red-500" />
         </button>
+      ),
+      align: "center",
+    },
+    {
+      render: (_, record) => (
+        <Button className="bg-blue-500 font-semi-bold" type="primary">
+          Close Attendance
+        </Button>
       ),
     },
   ];
 
   return (
     <section>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={dataSource} columns={columns} pagination={false} />
 
       <section>
         <Modal

@@ -1,22 +1,21 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-
 import { Dashboard, Auth, History } from "./pages";
+import { useSelector } from "react-redux";
 
 function App() {
+  const authData = useSelector((state) => state.auth.value);
+
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Auth />,
-    },
-    {
-      path: "/dashboard",
-      element: <Dashboard />,
+      element: authData.isLogin ? <Dashboard /> : <Auth />,
     },
     {
       path: "/history/:nik",
-      element: <History />,
+      element: authData.isLogin ? <History /> : <Auth />,
     },
   ]);
+
   return <RouterProvider router={router} />;
 }
 

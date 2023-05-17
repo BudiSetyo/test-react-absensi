@@ -15,12 +15,12 @@ const Admin = () => {
 
   return (
     <section>
-      <header className="flex md:flex-row flex-col justify-between gap-4 items-center mb-6">
-        <Input.Search
+      <header className="flex md:flex-row flex-col justify-end gap-4 items-center mb-6">
+        {/* <Input.Search
           className="md:w-60 w-full"
           size="large"
           placeholder="search..."
-        />
+        /> */}
         <Button
           className="bg-blue-500 md:w-fit w-full font-semibold rounded-lg"
           type="primary"

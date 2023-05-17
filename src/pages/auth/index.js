@@ -1,14 +1,51 @@
 import React from "react";
-import { AuthLayout } from "../../components";
-import { Button, Form, Input } from "antd";
-import { useNavigate } from "react-router-dom";
+import { AuthLayout, Spiner } from "../../components";
+import { Button, Form, Input, message } from "antd";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/features/auth";
+import axios from "axios";
+const api = process.env.REACT_APP_API_URL;
 
 const Auth = () => {
-  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
 
   const onSubmit = (values) => {
-    console.log("Success:", values);
-    return navigate("/dashboard");
+    setLoading(true);
+
+    axios({
+      method: "post",
+      url: `${api}/auth`,
+      data: {
+        nik: values.nik,
+        password: values.password,
+      },
+    })
+      .then((result) => {
+        const data = result.data.data;
+
+        dispatch(
+          login({
+            id: data.id,
+            name: data.name,
+            nik: data.nik,
+            role: data.role,
+            isLogin: true,
+            token: data.token,
+          })
+        );
+
+        message.success("Login Success");
+        setLoading(false);
+        return;
+      })
+      .catch((err) => {
+        message.error(err.response?.data.message);
+        setLoading(false);
+        return;
+      });
   };
 
   return (
@@ -21,6 +58,8 @@ const Auth = () => {
         </div>
       }
     >
+      {loading ? <Spiner /> : <></>}
+
       <section className="mt-8">
         <div className="flex justify-center">
           <Form
@@ -34,7 +73,7 @@ const Auth = () => {
               rules={[{ required: true, message: "Please input your NIK!" }]}
               name="nik"
             >
-              <Input />
+              <Input type="number" />
             </Form.Item>
             <Form.Item
               label="Password :"
