@@ -80,7 +80,7 @@ const Admin = () => {
               name="nik"
               rules={[{ required: true, message: "Please input your NIK!" }]}
             >
-              <Input type="number" />
+              <Input type="number" min={0} />
             </Form.Item>
 
             <Form.Item

@@ -15,7 +15,6 @@ const ListUser = () => {
   const navigate = useNavigate();
   const authData = useSelector((state) => state.auth.value);
 
-  const [loading, setLoading] = useState(false);
   const [listData, setListData] = useState([]);
   const [formData, setFormData] = useState({
     nik: "",
@@ -254,8 +253,6 @@ const ListUser = () => {
   };
 
   const fetchListData = () => {
-    setLoading(true);
-
     axios({
       method: "get",
       url: `${api}/users`,
@@ -272,12 +269,10 @@ const ListUser = () => {
             };
           })
         );
-        setLoading(false);
         return;
       })
       .catch((err) => {
         message.error(err.response?.data.message);
-        setLoading(false);
         return;
       });
   };
@@ -314,6 +309,7 @@ const ListUser = () => {
                 onChange={handleFormData}
                 value={formData.nik}
                 type="number"
+                min={0}
               />
             </Form.Item>
 

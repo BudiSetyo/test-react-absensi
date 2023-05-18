@@ -73,7 +73,7 @@ const Auth = () => {
               rules={[{ required: true, message: "Please input your NIK!" }]}
               name="nik"
             >
-              <Input type="number" />
+              <Input type="number" min={0} />
             </Form.Item>
             <Form.Item
               label="Password :"
