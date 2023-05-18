@@ -113,7 +113,10 @@ const ListUser = () => {
     {
       title: "Detail",
       render: (_, record) => (
-        <button onClick={() => navigate(`/history/${record.nik}`)}>
+        <button
+          onClick={() => navigate(`/history/${record.nik}`)}
+          disabled={record.role === "admin" ? true : false}
+        >
           <HistoryOutlined className="text-2xl" />
         </button>
       ),
@@ -131,7 +134,10 @@ const ListUser = () => {
     {
       title: "Delete",
       render: (_, record) => (
-        <button onClick={() => handleShowModal.delete(record)}>
+        <button
+          onClick={() => handleShowModal.delete(record)}
+          disabled={record.role === "admin" ? true : false}
+        >
           <DeleteOutlined className="text-2xl text-red-500" />
         </button>
       ),
@@ -162,6 +168,7 @@ const ListUser = () => {
           }}
           className="bg-blue-500 font-semi-bold"
           type="primary"
+          disabled={record.role === "admin" ? true : false}
         >
           Close Attendance
         </Button>
