@@ -18,6 +18,26 @@ const History = () => {
   const [userData, setUserData] = useState({});
   const [data, setData] = useState([]);
 
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 4,
+    },
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([]);
+    }
+  };
+
   const handleShowModal = () => setShowModal(!showModal);
 
   const finishChangePassword = (values) => {
@@ -147,7 +167,12 @@ const History = () => {
         </header>
 
         <section className="mt-10">
-          <Table dataSource={data} columns={columns} pagination={false} />
+          <Table
+            dataSource={data}
+            columns={columns}
+            pagination={tableParams.pagination}
+            onChange={handleTableChange}
+          />
         </section>
       </section>
 

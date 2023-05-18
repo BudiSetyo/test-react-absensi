@@ -21,6 +21,26 @@ const ListUser = () => {
     name: "",
   });
 
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setListData([]);
+    }
+  };
+
   const handleFormData = (e) => {
     const { value, name } = e.target;
 
@@ -290,7 +310,12 @@ const ListUser = () => {
 
   return (
     <section>
-      <Table dataSource={listData} columns={columns} pagination={false} />
+      <Table
+        dataSource={listData}
+        columns={columns}
+        pagination={tableParams.pagination}
+        onChange={handleTableChange}
+      />
 
       <section>
         <Modal

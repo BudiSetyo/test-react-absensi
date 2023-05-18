@@ -23,6 +23,7 @@ const Navbar = () => {
         return;
       })
       .catch((err) => {
+        // console.log(err);
         if (err.response?.data.message === "You have to login!") {
           return dispatch(logout());
         }

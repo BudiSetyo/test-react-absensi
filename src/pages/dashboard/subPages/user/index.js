@@ -12,6 +12,25 @@ const User = () => {
 
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 10,
+    },
+  });
+
+  const handleTableChange = (pagination, filters, sorter) => {
+    setTableParams({
+      pagination,
+      filters,
+      ...sorter,
+    });
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      setData([]);
+    }
+  };
 
   const columns = [
     {
@@ -84,7 +103,7 @@ const User = () => {
         return;
       })
       .catch((err) => {
-        message.error(err.response?.dta.message);
+        message.error(err.response?.data.message);
         return;
       });
   };
@@ -114,7 +133,12 @@ const User = () => {
       </header>
 
       <section className="mt-10">
-        <Table dataSource={data} columns={columns} pagination={false} />
+        <Table
+          dataSource={data}
+          columns={columns}
+          pagination={tableParams.pagination}
+          onChange={handleTableChange}
+        />
       </section>
     </section>
   );
